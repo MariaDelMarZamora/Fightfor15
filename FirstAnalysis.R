@@ -15,7 +15,7 @@ library(stringr)
 library(wordcloud)
 
 ### Recuerden cambiar el working directory por el suyo para que les corra el script
-setwd('/Users/mariorodriguez/Desktop/Hertie/3rd Semester/PolComNewMedia/Fightfor15')
+setwd('C:/Users/maria_000/Documents/GitHub/Fightfor15')
 
 #### Este sólo es el análisis que nos dio el profesor. Lo bueno es que pudimos hacer todos los comandos que nos enseñó. Bernie Sanders es por mucho el más retwiteado
 
@@ -59,7 +59,9 @@ wordcloud(hashtags_df[1:50,1], hashtags_df[1:50,2], random.order=F)
 
 ###Removing the first hashtag
 wordcloud(hashtags_df[2:50,1], hashtags_df[2:50,2], random.order=F)
-wordcloud(hashtags_df[2:50,1], hashtags_df[2:50,2], random.order=F, colors=brewer.pal(8, "Dark2"))
+wordcloud(hashtags_df[2:50,1], hashtags_df[2:50,2], random.order=F, colors=brewer.pal(8, "Dark2"), scale = c(5,0.5))
+wordcloud(hashtags_df[2:50,1], hashtags_df[2:50,2], random.order=F, colors=colorRampPalette(brewer.pal(8, "Dark2"))(32), scale = c(5,0.5))
+
 
 png("wordcloud.png", width=12, height=8, units="in", res=300)
 wordcloud(hashtags_df[2:50,1], hashtags_df[2:50,2], random.order=F, colors=brewer.pal(8, "Dark2"))
