@@ -127,3 +127,12 @@ table(sapply(cliques(Fightfor15graph),length)) ###Este se tardó muchisimo en pr
 plot(Fightfor15graph, layout = layout.kamada.kawai)  ###Este nada más no lo pude correr, igual alguien con un procesador más nuevo 
 
 
+###      Filtering cual es contenido original? dentro de ese, cual si se esta propagando, retweetCount>10   ###
+originalAll<- filter(TweetsMinWage100k, isRetweet == FALSE)
+
+TweetsMinWageFiltered <- filter(TweetsMinWage100k, retweetCount >=10 )
+original<-filter(TweetsMinWageFiltered, isRetweet == FALSE)
+
+### Conversations - who is replying and engaging in a conversation ###
+conversation<- filter(TweetsMinWage100k, !is.na(TweetsMinWage100k$replyToSN))
+pplconversing <- unique(TweetsMinWage100k$replyToSN)
