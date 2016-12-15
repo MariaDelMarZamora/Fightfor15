@@ -200,3 +200,18 @@ key_players$Type2 <-recode(key_players$Type, "1" = "traditional organizations",
                                  "6" = "advocacy groups")
 
 summary(key_players$Type2)
+
+
+### Top inbetween e indegree
+
+topindegree <- key_players[order(key_players$indegree, decreasing = T), ]
+topindegree <- topindegree[, c('id', 'indegree')]
+topindegree <- topindegree[1:20,]
+write.table(topindegree, file = 'topindegree.txt', row.names = F, col.names = T, sep = ',')
+write.csv(topindegree, file = 'topindegree.csv')
+
+topbetweeness <- key_players[order(key_players$betweenesscentrality, decreasing = T), ]
+topbetweeness <- topbetweeness[, c('id', 'betweenesscentrality')]
+topbetweeness <- topbetweeness[1:20,]
+write.table(topbetweeness, file = 'topbetweeness.txt', row.names = F, col.names = T, sep = ',')
+write.csv(topbetweeness, file = 'topbetweeness.csv')
