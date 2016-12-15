@@ -12,7 +12,7 @@ library(ROAuth)
 library(SnowballC)
 library(igraph)
 
-setwd('/Users/mariorodriguez/Desktop/Hertie/3rd Semester/PolComNewMedia')
+setwd('/Users/mariorodriguez/Desktop/Hertie/3rd Semester/PolComNewMedia/Fightfor15')
 
 requestURL <- "https://api.twitter.com/oauth/request_token"
 accessURL <- "https://api.twitter.com/oauth/access_token"
@@ -77,3 +77,9 @@ TweetsMinWage100k <- read.csv("TweetsMinWage100k.csv")
 summary(TweetsMinWage100k$retweetCount)
 
 TweetsMinWage100k$text[which.max(TweetsMinWage100k$retweetCount)]
+
+EdgesFightfor15 <- read.csv('EdgesFightfor15_3.csv', header = FALSE)
+
+Sample10kFightfor15 <- EdgesFightfor15[sample(nrow(EdgesFightfor15), 10000), ]
+
+write.csv(Sample10kFightfor15, "Sample10kFightfor15.csv")
