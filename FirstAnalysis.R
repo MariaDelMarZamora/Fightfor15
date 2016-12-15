@@ -13,6 +13,7 @@ library(igraph)
 library(ggplot2)
 library(stringr)
 library(wordcloud)
+library(dplyr)
 
 ### Recuerden cambiar el working directory por el suyo para que les corra el script
 setwd('C:/Users/maria_000/Documents/GitHub/Fightfor15')
@@ -136,3 +137,64 @@ original<-filter(TweetsMinWageFiltered, isRetweet == FALSE)
 ### Conversations - who is replying and engaging in a conversation ###
 conversation<- filter(TweetsMinWage100k, !is.na(TweetsMinWage100k$replyToSN))
 pplconversing <- unique(TweetsMinWage100k$replyToSN)
+
+
+### Growth of network use over time ###
+TweetsMinWage100k$time <-as.POSIXlt(TweetsMinWage100k$created)
+
+### Nodes with measures from gephi ###
+nodes<- read.csv("Yifan Hu/YifanHu model - Workspace 3 [Nodes].csv")
+nodes_indegree<- nodes[order(nodes$indegree, decreasing = T), ]
+nodes_indegree<- nodes_indegree[1:100,]
+write.csv(nodes_indegree, file = "nodes_indegree.csv")
+
+nodes_outdegree <- nodes[order(nodes$outdegree, decreasing = T),]
+nodes_outdegree <- nodes_outdegree[1:100,]
+write.csv(nodes_outdegree, file = "nodes_outdegree.csv")
+
+nodes_betweeness <- nodes[order(nodes$betweenesscentrality, decreasing = T),]
+nodes_betweeness<- nodes_betweeness[1:100,]
+write.csv(nodes_betweeness, file = "nodes_betweeness.csv")
+nodes_betweeness <- select(nodes_betweeness, id, betweenesscentrality)
+
+
+nodes_indegree<- read.csv("nodes_indegree_classified.csv")
+nodes_indegree$id <- as.character(nodes_indegree$id)
+
+nodes_in_between<-left_join(nodes_betweeness, nodes_indegree, by = "id")
+write.csv(nodes_in_between, file = "nodes_in_between.csv")
+
+nodes_between_classified<- read.csv("nodes_betweenINclassified.csv")
+
+### most retweeted
+mostRetweeted <- TweetsMinWage100k[order(TweetsMinWage100k$retweetCount, decreasing = T),]
+mostRetweeted<-select(mostRetweeted, screenName, retweetCount)
+most
+mostRetweeted <- TweetsMinWage100k[which(unique(TweetsMinWage100k$text)),]
+
+### recombining databases with classification ###
+nodes_between_classified<- select(nodes_between_classified, id, Type)
+nodes_indegree<-select(nodes_indegree, id, Type, indegree)
+nodeNames_in<-nodes_indegree$id %>% as.character()
+nodesNames_between<- nodes_between_classified$id %>% as.character()
+
+nodes_type<-full_join(nodes_between_classified, nodes_indegree)
+
+Names_brokers_receivers<- c(nodeNames_in, nodesNames_between)
+Names_brokers_receivers<-unique(Names_brokers_receivers)
+
+nodes<-select(nodes, id, indegree, eccentricity, modularity_class, betweenesscentrality, degree, closnesscentrality)
+
+key_players<-full_join(nodes, nodes_type)
+key_players<-filter(key_players, !is.na(key_players$Type))
+key_players$Type<- as.factor(key_players$Type)
+
+
+key_players$Type2 <-recode(key_players$Type, "1" = "traditional organizations",
+                                 "2" = "politicians",
+                                 "3" = "newspapers/media",
+                                 "4" = "citizens",
+                                 "5" = "opinion leaders/influencers",
+                                 "6" = "advocacy groups")
+
+summary(key_players$Type2)
