@@ -86,6 +86,7 @@ View(edges)
 write.csv(edges, file = "EdgesFightfor15.csv")
 
 graphObject = as.matrix(read.csv("EdgesFightfor15.csv", sep=",", header = FALSE))
+#graphObject<- as.matrix(edges, header = TRUE)
 
 Fightfor15graph<-graph_from_edgelist(graphObject, directed = TRUE)
 
@@ -170,9 +171,12 @@ nodes_between_classified<- read.csv("nodes_betweenINclassified.csv")
 
 ### most retweeted
 mostRetweeted <- TweetsMinWage100k[order(TweetsMinWage100k$retweetCount, decreasing = T),]
-mostRetweeted<-select(mostRetweeted, screenName, retweetCount)
-most
-mostRetweeted <- TweetsMinWage100k[which(unique(TweetsMinWage100k$text)),]
+mostRetweeted<-select(mostRetweeted, screenName, retweetCount, text)
+
+original_tweets<- filter(mostRetweeted, retweetCount =>10)
+
+
+
 
 ### recombining databases with classification ###
 nodes_between_classified<- select(nodes_between_classified, id, Type)
@@ -190,6 +194,39 @@ nodes<-select(nodes, id, indegree, eccentricity, modularity_class, betweenesscen
 key_players<-full_join(nodes, nodes_type)
 key_players<-filter(key_players, !is.na(key_players$Type))
 key_players$Type<- as.factor(key_players$Type)
+
+brokers<-full_join(nodes, nodes_between_classified)
+brokers<- filter(brokers, !is.na(brokers$Type))
+brokers$Type2 <-recode(brokers$Type, "1" = "traditional organizations",
+                           "2" = "politicians",
+                           "3" = "newspapers/media",
+                           "4" = "citizens",
+                           "5" = "opinion leaders/influencers",
+                           "6" = "advocacy groups")
+brokers$Type2<-as.factor(brokers$Type2)
+summary(brokers$Type2)
+
+ggplot() + geom_bar(data=brokers, aes(x = Type2), stat="count") +
+  theme_bw()+xlab(NULL) + 
+  theme(axis.text.x=element_text(angle=90,size=14))
+
+receivers <-full_join(nodes, nodes_indegree)
+receivers<- filter(receivers, !is.na(receivers$Type))
+receivers$Type2 <-recode(receivers$Type, "1" = "traditional organizations",
+                       "2" = "politicians",
+                       "3" = "newspapers/media",
+                       "4" = "citizens",
+                       "5" = "opinion leaders/influencers",
+                       "6" = "advocacy groups")
+
+receivers$Type2 <- as.factor(receivers$Type2)
+summary(receivers$Type2)
+barplot(prop.table(table(receivers$Type2)))
+
+ggplot() + geom_bar(data=receivers, aes(x = Type2), stat="count") +
+  theme_bw()+xlab(NULL) + 
+  theme(axis.text.x=element_text(angle=90,size=14))
+
 
 
 key_players$Type2 <-recode(key_players$Type, "1" = "traditional organizations",
