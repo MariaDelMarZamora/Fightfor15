@@ -1,0 +1,21 @@
+"retweet_users" "Freq"
+"2172" "SenSanders" 6507
+"804" "fightfor15" 5337
+"459" "chifightfor15" 3271
+"698" "EconomicPolicy" 2338
+"2201" "Show_Me15" 2012
+"1931" "RaiseUpfor15" 1699
+"807" "Fightfor15LA" 1401
+"633" "DerrickQLewis" 1190
+"2003" "RevDrBarber" 1169
+"1238" "Kaimandante" 1051
+"2358" "TheMarkRomano" 950
+"2127" "scrowder" 931
+"806" "FightFor15FL" 894
+"2177" "SenWarren" 699
+"2510" "UR_Ninja" 686
+"469" "ChrisJZullo" 651
+"1465" "MarkRuffalo" 622
+"1328" "larryelder" 618
+"2054" "RoseAnnDeMoro" 486
+"49" "32BJSEIU" 472
