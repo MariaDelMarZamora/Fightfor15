@@ -14,9 +14,11 @@ library(ggplot2)
 library(stringr)
 library(wordcloud)
 library(dplyr)
+library(repmis)
 
-### Recuerden cambiar el working directory por el suyo para que les corra el script
-setwd('C:/Users/maria_000/Documents/GitHub/Fightfor15')
+## Con repmis se pueden poder varios working directories para no tener que cambiarlo siempre
+possible_dir <- c('C:/Users/maria_000/Documents/GitHub/Fightfor15', '/Users/mariorodriguez/Desktop/Hertie/3rd Semester/PolComNewMedia/Fightfor15')
+repmis::set_valid_wd(possible_dir)
 
 #### Este sólo es el análisis que nos dio el profesor. Lo bueno es que pudimos hacer todos los comandos que nos enseñó. Bernie Sanders es por mucho el más retwiteado
 
